@@ -3,6 +3,9 @@ from odoo import models, fields, api
 from odoo.fields import Date as fDate
 from datetime import timedelta as td
 import odoo.addons.decimal_precision as dp
+from logging import getLogger
+
+_logger = getLogger('library.book')
 
 
 class BaseArchive(models.AbstractModel):
@@ -136,20 +139,25 @@ class LibraryBook(models.Model):
     def _check_release_date(self):
         for r in self:
             if r.date_release > fields.Date.today():
-                raise models.ValidationError(
-                    'Release date must be in the past')
+                # raise models.ValidationError(
+                #     'Release date must be in the past')
+                r.date_release = fields.Date.today()
 
     @api.depends('date_release')
     def _compute_age(self):
         today = fDate.from_string(fDate.today())
         for book in self.filtered('date_release'):
-            delta = (fDate.from_string(book.date_release - today))
+            delta = (fDate.from_string(book.date_release) - today)
             book.age_days = delta.days
 
     def _inverse_age(self):
         today = fDate.from_string(fDate.today())
         for book in self.filtered('date_release'):
-            d = td(days=book.age_days) - today
+            _logger.info(td(days=book.age_days))
+            _logger.info(type(td(days=book.age_days)))
+            _logger.info(today)
+            _logger.info(type(today))
+            d = today - td(days=book.age_days)
             book.date_release = fDate.to_string(d)
 
     def _search_age(self, operator, value):

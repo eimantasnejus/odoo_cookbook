@@ -20,11 +20,29 @@
             <field name="arch" type="xml">
             <form>
                 <group>
+                    <group>
                     <field name="name"/>
+                    <field name="short_name"/>
+                    <field name="state"/>
+                    <field name="date_release"/>
+                    <field name="date_updated"/>
+                    <field name="out_of_print"/>
+                    <field name="cover"/>
+                    <field name="description"/>
+                    <field name="notes"/>
                     <field name="author_ids" widget="many2many_tags"/>
                 </group>
                 <group>
                     <field name="date_release"/>
+                    <field name="pages"/>
+                    <field name="reader_rating"/>
+                    <field name="cost_price"/>
+                    <field name="currency_id"/>
+                    <field name="retail_price"/>
+                    <field name="publisher_id"/>
+                    <field name="publisher_city"/>
+                    <field name="age_days"/>
+                </group>
                 </group>
             </form>
             </field>
